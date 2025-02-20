@@ -1,0 +1,68 @@
+README
+
+This is a setup guide for using the MySQL database with Docker.
+
+Included in this folder are two items. DO NOT ALTER THESE:
+
+docker-compose.yml
+dockmates_backup.sql
+
+The .yml file is a set of commands used by Docker to create and set up the MySQL database automatically.
+
+The .sql file will serve as the basic database for testing and development. Anytime you want to start clean for testing purposes, reset to this version of the database. (Instructions below)
+
+This setup guide primarily uses terminal commands, but it can also be helpful to use the Docker Desktop app to monitor progress.
+
+1. INSTALLING AND SETTING UP DOCKER
+
+	Check if Docker is installed by running:
+		docker --version
+
+	If Docker is not installed, the easiest way to do this is by installing the Docker Desktop app, found here:
+	https://www.docker.com/products/docker-desktop/
+
+	Once the Desktop app is installed, run the version command again to ensure it worked.
+
+2. HOW TO SET UP THE MYSQL DATABASE FOR THE FIRST TIME
+
+	In a terminal, navigate to the folder with the .yml and .sql files.
+
+	Run the command:
+	docker compose up -d
+
+	If this is the first time running, it may take a minute to install things like the MySQL image.
+
+	Once finished, you should have a MySQL database running in Docker with all the data from the .sql file.
+
+	To check if the container is running, you can either view it in the Docker Desktop app or run the command:
+		docker ps
+	To shut down the container, run the command:
+		docker compose down
+
+3. HOW TO USE THE SQL DATABASE
+
+	First, ensure that the container with the database is running with the command:
+		docker ps
+
+	To access the MySQL database, run:
+		docker exec -it dockmates mysql -uroot -p
+
+	This will prompt you for a password. Currently, for testing and development, the password is password.
+
+	You are now in the MySQL database and have access to all the normal SQL commands:
+		Use SHOW DATABASES; to see all available databases.
+		Use USE dockmates_db; to navigate to the dockmates_db database and view or alter data as needed.
+
+4. HOW TO RESET THE DATABASE
+
+	The local database is persistent, meaning if you shut down and start up the database container again, its data will remain the same.
+
+	To get a clean version of the dockmates_db start by removing the old volume with this command:
+		docker volume rm database_dockmates_data
+
+	Now, in the folder containing the .yml and .sql files, run:
+		docker compose up -d
+
+	You now have a clean version of the database with all data reset.
+
+
